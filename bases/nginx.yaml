@@ -13,16 +13,6 @@ spec:
           serviceName: nginx
           servicePort: 80
 ---
-apiVersion: policy/v1beta1
-kind: PodDisruptionBudget
-metadata:
-  name: nginx
-spec:
-  maxUnavailable: 1
-  selector:
-    matchLabels:
-      app: nginx
----
 apiVersion: v1
 kind: Service
 metadata:
@@ -36,6 +26,16 @@ spec:
     targetPort: 80
   selector:
     app: nginx
+---
+apiVersion: policy/v1beta1
+kind: PodDisruptionBudget
+metadata:
+  name: nginx
+spec:
+  maxUnavailable: 1
+  selector:
+    matchLabels:
+      app: nginx
 ---
 apiVersion: apps/v1
 kind: Deployment
