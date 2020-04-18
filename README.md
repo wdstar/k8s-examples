@@ -64,10 +64,14 @@ Kubernetes examples.
 
 1. Apply manifest.
     ```bash
-    $ kubectl apply -f bases/nginx.yaml
+    $ kubectl apply -k nginx/bases
     ```
 1. Add the following DNS entry to your `hosts` file
     ```
     <microk8s host IP> nginx.default.uk8s.example.com
     ```
 1. Access http://nginx.default.uk8s.example.com
+1. Delete manifest.
+    ```bash
+    $ kubectl delete -k nginx/bases
+    ```
