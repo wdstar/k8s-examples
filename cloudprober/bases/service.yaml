@@ -1,0 +1,148 @@
+---
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: cloudprober
+spec:
+  rules:
+  - host: cloudprober.default.uk8s.example.com
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: cloudprober
+          servicePort: 9313
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cloudprober
+  labels:
+    app: cloudprober
+spec:
+  type: ClusterIP
+  ports:
+  - port: 9313
+    targetPort: 9313
+  selector:
+    app: cloudprober
+---
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: prom-cb
+spec:
+  rules:
+  - host: prom-cb.default.uk8s.example.com
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: prom-cb
+          servicePort: 9090
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: prom-cb
+  labels:
+    app: cloudprober
+spec:
+  type: ClusterIP
+  ports:
+  - port: 9090
+    targetPort: 9090
+  selector:
+    app: cloudprober
+---
+apiVersion: policy/v1beta1
+kind: PodDisruptionBudget
+metadata:
+  name: cloudprober
+spec:
+  maxUnavailable: 1
+  selector:
+    matchLabels:
+      app: cloudprober
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cloudprober
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cloudprober
+  template:
+    metadata:
+      name: cloudprober
+      labels:
+        app: cloudprober
+    spec:
+      containers:
+      - name: cloudprober
+        image: cloudprober/cloudprober
+        command: 
+        - /cloudprober
+        args:
+        - --config_file
+        - /cfg/cloudprober.cfg
+        - --logtostderr
+        ports:
+        - name: http
+          containerPort: 9313
+        volumeMounts:
+        - name: cloudprober-vol
+          mountPath: /cfg
+      - name: prom
+        image: prom/prometheus
+        ports:
+        - containerPort: 9090
+        volumeMounts:
+        - name: prom-vol
+          mountPath: /etc/prometheus
+      volumes:
+      - name: cloudprober-vol
+        configMap:
+          name: cloudprober
+          items:
+          - key: cloudprober.cfg
+            path: cloudprober.cfg
+      - name: prom-vol
+        configMap:
+          name: cloudprober
+          items:
+          - key: prometheus.yml
+            path: prometheus.yml
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cloudprober
+data:
+  cloudprober.cfg: |
+    probe {
+      name: "google_homepage"
+      type: HTTP
+      targets {
+        host_names: "www.google.com"
+      }
+      interval_msec: 5000  # 5s
+      timeout_msec: 1000   # 1s
+    }
+  prometheus.yml: |
+    global:
+      scrape_interval:     10s  
+      evaluation_interval: 10s
+      external_labels:
+        monitor: 'cloudprober-monitor'
+
+    rule_files:
+    #  - "/var/app/prometheus/alert.rules"
+
+    scrape_configs:
+      - job_name: 'cloudprober'
+        static_configs:
+          - targets:
+            - 'localhost:9313'

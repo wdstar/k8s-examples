@@ -1,6 +1,15 @@
 # k8s-examples
 Kubernetes examples.
 
+## Table of Contents
+
+- [k8s-examples](#k8s-examples)
+    - [Table of Contents](#table-of-contents)
+    - [Install MicroK8s](#install-microk8s)
+    - [Examples](#examples)
+        - [Cloudprober](#cloudprober)
+        - [Nginx](#nginx)
+
 ## Install MicroK8s
 
 1. Install MicroK8s and addons.
@@ -59,6 +68,22 @@ Kubernetes examples.
     ```
 
 ## Examples
+
+### Cloudprober
+
+1. Apply manifest.
+    ```bash
+    $ kubectl apply -k cloudprober/bases
+    ```
+1. Add the following DNS entry to your `hosts` file
+    ```
+    <microk8s host IP> cloudprober.default.uk8s.example.com prom-cb.default.uk8s.example.com
+    ```
+1. Access http://cloudprober.default.uk8s.example.com/status and http://prom-cb.default.uk8s.example.com
+1. Delete manifest.
+    ```bash
+    $ kubectl delete -k cloudprober/bases
+    ```
 
 ### Nginx
 
