@@ -128,7 +128,7 @@ data:
       targets {
         host_names: "www.google.com"
       }
-      interval_msec: 5000  # 5s
+      interval_msec: 60000 # 1m
       timeout_msec: 1000   # 1s
     }
   prometheus.yml: |
