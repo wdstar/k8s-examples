@@ -92,6 +92,10 @@ spec:
         ports:
         - name: http
           containerPort: 9313
+        # env:
+        # # Cloudprober instance scope proxy
+        # - name: HTTP_PROXY
+        #   value: localhost:3128
         volumeMounts:
         - name: cloudprober-vol
           mountPath: /cfg
@@ -102,6 +106,10 @@ spec:
         volumeMounts:
         - name: prom-vol
           mountPath: /etc/prometheus
+      - name: squid
+        image: sameersbn/squid
+        ports:
+        - containerPort: 3128
       volumes:
       - name: cloudprober-vol
         configMap:
@@ -130,6 +138,11 @@ data:
       }
       interval_msec: 60000 # 1m
       timeout_msec: 1000   # 1s
+      # probe-type specific configs
+      http_probe {
+        # probe scope proxy
+        proxy_url: "http://localhost:3128"
+      }
     }
   prometheus.yml: |
     global:
