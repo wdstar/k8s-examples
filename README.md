@@ -7,6 +7,7 @@ Kubernetes examples.
     - [Table of Contents](#table-of-contents)
     - [Install MicroK8s](#install-microk8s)
     - [Examples](#examples)
+        - [chaoskube](#chaoskube)
         - [Cloudprober](#cloudprober)
         - [Nginx](#nginx)
 
@@ -69,7 +70,18 @@ Kubernetes examples.
 
 ## Examples
 
-### Cloudprober
+### [chaoskube](https://github.com/linki/chaoskube)
+
+1. Apply manifest.
+    ```bash
+    $ kubectl apply -k chaoskube/bases
+    ```
+1. Delete manifest.
+    ```bash
+    $ kubectl delete -k chaoskube/bases
+    ```
+
+### [Cloudprober](https://github.com/google/cloudprober)
 
 1. Apply manifest.
     ```bash
@@ -85,7 +97,7 @@ Kubernetes examples.
     $ kubectl delete -k cloudprober/bases
     ```
 
-### Nginx
+### [Nginx](https://www.nginx.com/)
 
 1. Apply manifest.
     ```bash
