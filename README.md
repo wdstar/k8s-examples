@@ -12,6 +12,7 @@ Kubernetes examples.
         - [crond](#crond)
         - [mtail](#mtail)
         - [Nginx](#nginx)
+        - [Telegraf](#telegraf)
 
 ## Install MicroK8s
 
@@ -29,7 +30,7 @@ Kubernetes examples.
 
     $ sudo microk8s.enable dns ingress
     Enabling DNS
-    Applying manifest
+    Applying manifests
     serviceaccount/coredns created
     configmap/coredns created
     ...
@@ -74,18 +75,18 @@ Kubernetes examples.
 
 ### [chaoskube](https://github.com/linki/chaoskube)
 
-1. Apply manifest.
+1. Apply manifests.
     ```bash
     $ kubectl apply -k chaoskube/bases
     ```
-1. Delete manifest.
+1. Delete manifests.
     ```bash
     $ kubectl delete -k chaoskube/bases
     ```
 
 ### [Cloudprober](https://github.com/google/cloudprober)
 
-1. Apply manifest.
+1. Apply manifests.
     ```bash
     $ kubectl apply -k cloudprober/bases
     ```
@@ -94,7 +95,7 @@ Kubernetes examples.
     <microk8s host IP> cloudprober.default.uk8s.example.com prom-cb.default.uk8s.example.com
     ```
 1. Access http://cloudprober.default.uk8s.example.com/status and http://prom-cb.default.uk8s.example.com
-1. Delete manifest.
+1. Delete manifests.
     ```bash
     $ kubectl delete -k cloudprober/bases
     ```
@@ -109,7 +110,7 @@ See: https://github.com/wdstar/mtail-image
 
 ### [Nginx](https://www.nginx.com/)
 
-1. Apply manifest.
+1. Apply manifests.
     ```bash
     $ kubectl apply -k nginx/bases
     ```
@@ -118,7 +119,23 @@ See: https://github.com/wdstar/mtail-image
     <microk8s host IP> nginx.default.uk8s.example.com
     ```
 1. Access http://nginx.default.uk8s.example.com
-1. Delete manifest.
+1. Delete manifests.
     ```bash
     $ kubectl delete -k nginx/bases
+    ```
+
+### [Telegraf](https://github.com/influxdata/telegraf)
+
+1. Apply manifests.
+    ```bash
+    $ kubectl apply -k telegraf/bases
+    ```
+1. Add the following DNS entry to your `hosts` file
+    ```
+    <microk8s host IP> prom-tg.default.uk8s.example.com
+    ```
+1. Access http://prom-tg.default.uk8s.example.com
+1. Delete manifests.
+    ```bash
+    $ kubectl delete -k telegraf/bases
     ```
