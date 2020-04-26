@@ -1,0 +1,5 @@
+namespace: default
+bases:
+- ../bases
+patchesStrategicMerge:
+- service.yaml

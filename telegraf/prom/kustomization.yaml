@@ -1,0 +1,7 @@
+namespace: default
+bases:
+- ../bases
+resources:
+- ingress.yaml
+patchesStrategicMerge:
+- service.yaml

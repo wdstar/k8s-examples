@@ -1,32 +1,4 @@
 ---
-apiVersion: networking.k8s.io/v1beta1
-kind: Ingress
-metadata:
-  name: prom-tg
-spec:
-  rules:
-  - host: prom-tg.default.uk8s.example.com
-    http:
-      paths:
-      - path: /
-        backend:
-          serviceName: prom-tg
-          servicePort: 9090
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: prom-tg
-  labels:
-    app: telegraf
-spec:
-  type: ClusterIP
-  ports:
-  - port: 9090
-    targetPort: 9090
-  selector:
-    app: telegraf
----
 apiVersion: policy/v1beta1
 kind: PodDisruptionBudget
 metadata:
@@ -58,22 +30,11 @@ spec:
         args:
         - --config-directory
         - /etc/telegraf/telegraf.d
-        ports:
-        # outputs.prometheus_client
-        - name: http
-          containerPort: 9273
         volumeMounts:
         - name: telegraf-vol
           mountPath: /etc/telegraf
         - name: telegraf-d-vol
           mountPath: /etc/telegraf/telegraf.d
-      - name: prom
-        image: prom/prometheus
-        ports:
-        - containerPort: 9090
-        volumeMounts:
-        - name: prom-vol
-          mountPath: /etc/prometheus
       volumes:
       - name: telegraf-vol
         configMap:
@@ -89,12 +50,6 @@ spec:
             path: inputs.conf
           - key: telegraf.outputs.conf
             path: outputs.conf
-      - name: prom-vol
-        configMap:
-          name: telegraf
-          items:
-          - key: prometheus.yml
-            path: prometheus.yml
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -266,24 +221,4 @@ data:
       ## Uncomment to remove deprecated metrics.
       # fielddrop = ["uptime_format"]
   telegraf.outputs.conf: |
-    # Publish all metrics to /metrics for Prometheus to scrape
-    # See: https://github.com/influxdata/telegraf/tree/master/plugins/outputs/prometheus_client
-    [[outputs.prometheus_client]]
-      ## Address to listen on.
-      listen = ":9273"
-      metric_version = 2
-  prometheus.yml: |
-    global:
-      scrape_interval:     10s  
-      evaluation_interval: 10s
-      external_labels:
-        monitor: 'telegraf-monitor'
-
-    rule_files:
-    #  - "/var/app/prometheus/alert.rules"
-
-    scrape_configs:
-      - job_name: 'telegraf'
-        static_configs:
-          - targets:
-            - 'localhost:9273'
+    # Note: You must add at least one output plugin.

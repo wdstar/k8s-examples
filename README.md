@@ -126,9 +126,29 @@ See: https://github.com/wdstar/mtail-image
 
 ### [Telegraf](https://github.com/influxdata/telegraf)
 
+#### with InfluxDB
+
 1. Apply manifests.
     ```bash
-    $ kubectl apply -k telegraf/bases
+    $ kubectl apply -k telegraf/influxdb
+    ```
+1. Access InfluxDB
+    ```bash
+    $ kubectl exec -it telegraf-<pod id> -c influxdb -- influx
+    Connected to http://localhost:8086 version 1.8.0
+    InfluxDB shell version: 1.8.0
+    >
+    ```
+1. Delete manifests.
+    ```bash
+    $ kubectl delete -k telegraf/influxdb
+    ```
+
+#### with Prometheus
+
+1. Apply manifests.
+    ```bash
+    $ kubectl apply -k telegraf/prom
     ```
 1. Add the following DNS entry to your `hosts` file
     ```
@@ -137,5 +157,5 @@ See: https://github.com/wdstar/mtail-image
 1. Access http://prom-tg.default.uk8s.example.com
 1. Delete manifests.
     ```bash
-    $ kubectl delete -k telegraf/bases
+    $ kubectl delete -k telegraf/prom
     ```

@@ -1,0 +1,31 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: telegraf
+spec:
+  template:
+    spec:
+      containers:
+      - name: influxdb
+        image: influxdb
+        ports:
+        - containerPort: 8086
+          protocol: TCP
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: telegraf
+data:
+  telegraf.outputs.conf: |
+    # Configuration for sending metrics to InfluxDB
+    [[outputs.influxdb]]
+      ## The full HTTP or UDP URL for your InfluxDB instance.
+      ##
+      ## Multiple URLs can be specified for a single cluster, only ONE of the
+      ## urls will be written to each interval.
+      # urls = ["unix:///var/run/influxdb.sock"]
+      # urls = ["udp://127.0.0.1:8089"]
+      # urls = ["http://127.0.0.1:8086"]
+      urls = ["http://localhost:8086"]

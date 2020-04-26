@@ -1,0 +1,56 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: telegraf
+spec:
+  template:
+    spec:
+      containers:
+      - name: telegraf
+        ports:
+        # outputs.prometheus_client
+        - name: http
+          containerPort: 9273
+      - name: prom
+        image: prom/prometheus
+        ports:
+        - containerPort: 9090
+        volumeMounts:
+        - name: prom-vol
+          mountPath: /etc/prometheus
+      volumes:
+      - name: prom-vol
+        configMap:
+          name: telegraf
+          items:
+          - key: prometheus.yml
+            path: prometheus.yml
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: telegraf
+data:
+  telegraf.outputs.conf: |
+    # Publish all metrics to /metrics for Prometheus to scrape
+    # See: https://github.com/influxdata/telegraf/tree/master/plugins/outputs/prometheus_client
+    [[outputs.prometheus_client]]
+      ## Address to listen on.
+      listen = ":9273"
+      metric_version = 2
+  prometheus.yml: |
+    global:
+      scrape_interval:     10s  
+      evaluation_interval: 10s
+      external_labels:
+        monitor: 'telegraf-monitor'
+
+    rule_files:
+    #  - "/var/app/prometheus/alert.rules"
+    
+    scrape_configs:
+      - job_name: 'telegraf'
+        static_configs:
+          - targets:
+            - 'localhost:9273'
