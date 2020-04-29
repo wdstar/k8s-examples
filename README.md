@@ -117,8 +117,12 @@ See: https://github.com/wdstar/crond-image
     ```
 1. Access http://grafana.default.uk8s.example.com
 1. Data source examples.
-    - Prometheus: `http://prom-tg.default.svc.cluster.local:9090`
-    - InfluxDB: `http://influxdb.default.svc.cluster.local:8086`
+    - Prometheus:
+        - `http://prom.default.svc.cluster.local:9090`: See [Mtail example](#mtail).
+        - `http://prom-cb.default.svc.cluster.local:9090`: See [Cloudprober example](#cloudprober).
+        - `http://prom-tg.default.svc.cluster.local:9090`: See [Telegraf example](#telegraf).
+    - InfluxDB:
+        - `http://influxdb.default.svc.cluster.local:8086`: See [Telegraf example](#telegraf).
 1. Delete manifests.
     ```bash
     $ kubectl delete -k grafana/bases

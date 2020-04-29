@@ -50,7 +50,16 @@ data:
     #  - "/var/app/prometheus/alert.rules"
     
     scrape_configs:
+      - job_name: 'prometheus'
+        static_configs:
+          - targets:
+            - 'localhost:9090'
       - job_name: 'telegraf'
         static_configs:
           - targets:
             - 'localhost:9273'
+      # See Grafana example.
+      - job_name: 'grafana'
+        static_configs:
+          - targets:
+            - 'grafana.default.svc.cluster.local:3000'
