@@ -10,6 +10,7 @@ Kubernetes examples.
         - [chaoskube](#chaoskube)
         - [Cloudprober](#cloudprober)
         - [crond](#crond)
+        - [Grafana](#grafana)
         - [mtail](#mtail)
         - [Nginx](#nginx)
         - [Telegraf](#telegraf)
@@ -90,7 +91,7 @@ Kubernetes examples.
     ```bash
     $ kubectl apply -k cloudprober/bases
     ```
-1. Add the following DNS entry to your `hosts` file
+1. Add the following DNS entry to your `hosts` file.
     ```
     <microk8s host IP> cloudprober.default.uk8s.example.com prom-cb.default.uk8s.example.com
     ```
@@ -104,6 +105,25 @@ Kubernetes examples.
 
 See: https://github.com/wdstar/crond-image
 
+### [Grafana](https://grafana.com/)
+
+1. Apply manifests.
+    ```bash
+    $ kubectl apply -k grafana/bases
+    ```
+1. Add the following DNS entry to your `hosts` file.
+    ```
+    <microk8s host IP> grafana.default.uk8s.example.com
+    ```
+1. Access http://grafana.default.uk8s.example.com
+1. Data source examples.
+    - Prometheus: `http://prom-tg.default.svc.cluster.local:9090`
+    - InfluxDB: `http://influxdb.default.svc.cluster.local:8086`
+1. Delete manifests.
+    ```bash
+    $ kubectl delete -k grafana/bases
+    ```
+
 ### mtail
 
 See: https://github.com/wdstar/mtail-image
@@ -114,7 +134,7 @@ See: https://github.com/wdstar/mtail-image
     ```bash
     $ kubectl apply -k nginx/bases
     ```
-1. Add the following DNS entry to your `hosts` file
+1. Add the following DNS entry to your `hosts` file.
     ```
     <microk8s host IP> nginx.default.uk8s.example.com
     ```
@@ -150,7 +170,7 @@ See: https://github.com/wdstar/mtail-image
     ```bash
     $ kubectl apply -k telegraf/prom
     ```
-1. Add the following DNS entry to your `hosts` file
+1. Add the following DNS entry to your `hosts` file.
     ```
     <microk8s host IP> prom-tg.default.uk8s.example.com
     ```
