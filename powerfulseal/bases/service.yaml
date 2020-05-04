@@ -1,0 +1,129 @@
+---
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: powerfulseal
+spec:
+  rules:
+  - host: powerfulseal.default.uk8s.example.com
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: powerfulseal
+          servicePort: 8080
+  - host: powerfulseal-exp.default.uk8s.example.com
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: powerfulseal-exp
+          servicePort: 9999
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: powerfulseal
+  labels:
+    app: powerfulseal
+spec:
+  type: ClusterIP
+  ports:
+  - port: 8080
+    targetPort: 8080
+  selector:
+    app: powerfulseal
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: powerfulseal-exp
+  labels:
+    app: powerfulseal
+spec:
+  type: ClusterIP
+  ports:
+  - port: 9999
+    targetPort: 9999
+  selector:
+    app: powerfulseal
+---
+apiVersion: policy/v1beta1
+kind: PodDisruptionBudget
+metadata:
+  name: powerfulseal
+spec:
+  maxUnavailable: 1
+  selector:
+    matchLabels:
+      app: powerfulseal
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: powerfulseal
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: powerfulseal
+  template:
+    metadata:
+      labels:
+        app: powerfulseal
+    spec:
+      serviceAccountName: powerfulseal
+      containers:
+      - name: powerfulseal
+        image: store/bloomberg/powerfulseal:2.8.0
+        args: 
+        - autonomous
+        - --inventory-kubernetes 
+        - --no-cloud
+        - --policy-file=/etc/powerfulseal/policy.yml
+        - --use-pod-delete-instead-of-ssh-kill
+        - --prometheus-collector
+        - --prometheus-host=0.0.0.0
+        - --prometheus-port=9999
+        # Web UI
+        # default: 127.0.0.1
+        - --host=0.0.0.0
+        # default: 8080
+        #- --port=30100
+        # or headless (no Web UI) for production
+        #- --headless
+        ports:
+        - containerPort: 8080
+        - containerPort: 9999
+        volumeMounts: 
+        - name: powerfulseal-vol
+          mountPath: /etc/powerfulseal
+      volumes:
+      - name: powerfulseal-vol
+        configMap: 
+          name: powerfulseal
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: powerfulseal
+data:
+  policy.yml: |
+    # See https://github.com/bloomberg/powerfulseal/blob/master/tests/policy/example_config.yml
+    config:
+      # we don't set loopsNumber, so it will loop indefinitely
+      minSecondsBetweenRuns: 600
+      maxSecondsBetweenRuns: 1800
+    nodeScenarios: []
+    podScenarios:
+    - name: "delete random pods in default namespace"
+      match:
+      - namespace:
+          name: "default"
+      filters:
+      - randomSample:
+          size: 1
+      actions:
+      - kill:
+          probability: 0.77
+          force: true

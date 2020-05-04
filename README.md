@@ -13,6 +13,7 @@ Kubernetes examples.
         - [Grafana](#grafana)
         - [mtail](#mtail)
         - [Nginx](#nginx)
+        - [PowerfulSeal](#powerfulseal )
         - [Telegraf](#telegraf)
 
 ## Install MicroK8s
@@ -146,6 +147,22 @@ See: https://github.com/wdstar/mtail-image
 1. Delete manifests.
     ```bash
     $ kubectl delete -k nginx/bases
+    ```
+
+### [PowerfulSeal](https://github.com/bloomberg/powerfulseal)
+
+1. Apply manifests.
+    ```bash
+    $ kubectl apply -k powerfulseal/bases
+    ```
+1. Add the following DNS entry to your `hosts` file.
+    ```
+    <microk8s host IP> powerfulseal.default.uk8s.example.com powerfulseal-exp.default.uk8s.example.com
+    ```
+1. Access [Web UI](http://powerfulseal.default.uk8s.example.com), [Prometheus exporter](http://powerfulseal-exp.default.uk8s.example.com/metrics)
+1. Delete manifests.
+    ```bash
+    $ kubectl delete -k powerfulseal/bases
     ```
 
 ### [Telegraf](https://github.com/influxdata/telegraf)
