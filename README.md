@@ -15,6 +15,7 @@ Kubernetes examples.
         - [Nginx](#nginx)
         - [PowerfulSeal](#powerfulseal )
         - [Telegraf](#telegraf)
+        - [Telepresence](#telepresence)
 
 ## Install MicroK8s
 
@@ -199,4 +200,23 @@ See: https://github.com/wdstar/mtail-image
 1. Delete manifests.
     ```bash
     $ kubectl delete -k telegraf/prom
+    ```
+
+### [Telepresence](https://www.telepresence.io/)
+
+#### with Nginx example
+
+1. Apply Nginx example's manifests.
+    ```bash
+    $ kubectl apply -k nginx/bases
+    ```
+1. Access Nginx service (welcome page) by the Kubernetes internal DNS.
+    ```bash
+    $ telepresence --run curl http://nginx.default.svc.cluster.local
+    ...
+    $ telepresence --run curl http://nginx.default
+    ...
+    # by Docker
+    $ telepresence --docker-run --rm -it pstauffer/curl curl http://nginx.default.svc.cluster.local
+    ...
     ```
