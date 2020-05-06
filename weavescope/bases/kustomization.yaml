@@ -1,0 +1,7 @@
+namespace: weave
+resources:
+- agent.yaml
+- cluster-agent.yaml
+- rbac.yaml
+- security.yaml
+- service.yaml
