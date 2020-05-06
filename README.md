@@ -11,6 +11,7 @@ Kubernetes examples.
         - [Cloudprober](#cloudprober)
         - [crond](#crond)
         - [Grafana](#grafana)
+        - [Kubernetes Operational View](#kubernetes-operational-view)
         - [mtail](#mtail)
         - [Nginx](#nginx)
         - [PowerfulSeal](#powerfulseal )
@@ -128,6 +129,22 @@ See: https://github.com/wdstar/crond-image
 1. Delete manifests.
     ```bash
     $ kubectl delete -k grafana/bases
+    ```
+
+### [Kubernetes Operational View]()
+
+1. Apply manifests.
+    ```bash
+    $ kubectl apply -k kube-ops-view/bases
+    ```
+1. Add the following DNS entry to your `hosts` file.
+    ```
+    <microk8s host IP> kube-ops-view.default.uk8s.example.com
+    ```
+1. Access http://kube-ops-view.default.uk8s.example.com
+1. Delete manifests.
+    ```bash
+    $ kubectl delete -k kube-ops-view/bases
     ```
 
 ### mtail
