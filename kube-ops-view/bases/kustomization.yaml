@@ -1,5 +1,6 @@
 namespace: default
 resources:
+- ingress.yaml
 - rbac.yaml
 - redis.yaml
 - service.yaml

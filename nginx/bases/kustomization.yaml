@@ -1,3 +1,4 @@
 namespace: default
 resources:
-- nginx.yaml
+- ingress.yaml
+- service.yaml
