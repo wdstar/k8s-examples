@@ -23,45 +23,52 @@ spec:
         weave-scope-component: agent
     spec:
       containers:
-        - name: scope-agent
-          args:
-            - '--mode=probe'
-            - '--probe-only'
-            - '--probe.kubernetes.role=host'
-            - '--probe.docker.bridge=docker0'
-            - '--probe.docker=true'
-            - 'weave-scope-app.weave.svc.cluster.local.:80'
-          image: weaveworks/scope:1.13.0
-          imagePullPolicy: IfNotPresent
-          resources:
-            requests:
-              cpu: 100m
-              memory: 100Mi
-          securityContext:
-            privileged: true
-          volumeMounts:
-            - name: docker-socket
-              mountPath: /var/run/docker.sock
-            - name: scope-plugins
-              mountPath: /var/run/scope/plugins
-            - name: sys-kernel-debug
-              mountPath: /sys/kernel/debug
+      - name: scope-agent
+        args:
+        - '--mode=probe'
+        - '--probe-only'
+        - '--probe.kubernetes.role=host'
+        - '--probe.cri=true'
+        - '--probe.cri.endpoint=unix///run/containerd/containerd.sock'
+        #- '--probe.docker.bridge=docker0'
+        #- '--probe.docker=true'
+        - 'weave-scope-app.weave.svc.cluster.local.:80'
+        image: weaveworks/scope:1.13.0
+        imagePullPolicy: IfNotPresent
+        resources:
+          requests:
+            cpu: 100m
+            memory: 100Mi
+        securityContext:
+          privileged: true
+        volumeMounts:
+        - name: containerd-socket
+          mountPath: /run/containerd/containerd.sock
+        # - name: docker-socket
+        #   mountPath: /var/run/docker.sock
+        - name: scope-plugins
+          mountPath: /var/run/scope/plugins
+        - name: sys-kernel-debug
+          mountPath: /sys/kernel/debug
       dnsPolicy: ClusterFirstWithHostNet
       hostNetwork: true
       hostPID: true
       tolerations:
-        - effect: NoSchedule
-          operator: Exists
+      - effect: NoSchedule
+        operator: Exists
       volumes:
-        - name: docker-socket
-          hostPath:
-            path: /var/run/docker.sock
-        - name: scope-plugins
-          hostPath:
-            path: /var/run/scope/plugins
-        - name: sys-kernel-debug
-          hostPath:
-            path: /sys/kernel/debug
+      - name: containerd-socket
+        hostPath:
+          path: /var/snap/microk8s/common/run/containerd.sock
+      # - name: docker-socket
+      #   hostPath:
+      #     path: /var/run/docker.sock
+      - name: scope-plugins
+        hostPath:
+          path: /var/run/scope/plugins
+      - name: sys-kernel-debug
+        hostPath:
+          path: /sys/kernel/debug
   updateStrategy:
     rollingUpdate:
       maxUnavailable: 1

@@ -17,6 +17,7 @@ Kubernetes examples.
         - [PowerfulSeal](#powerfulseal )
         - [Telegraf](#telegraf)
         - [Telepresence](#telepresence)
+        - [WeaveScope](#weavescope)
 
 ## Install MicroK8s
 
@@ -32,7 +33,7 @@ Kubernetes examples.
     dashboard: disabled
     ...
 
-    $ sudo microk8s.enable dns ingress
+    $ sudo microk8s.enable dns ingress rbac
     Enabling DNS
     Applying manifests
     serviceaccount/coredns created
@@ -46,6 +47,7 @@ Kubernetes examples.
     clusterrole.rbac.authorization.k8s.io/nginx-ingress-microk8s-clusterrole unchanged
     ...
     Ingress is enabled
+    ...
     ```
 1. Alias the `microk8s.kubectl` command or import microk8s' conf. to your existing `kubectl`.
     ```bash
@@ -236,4 +238,38 @@ See: https://github.com/wdstar/mtail-image
     # by Docker
     $ telepresence --docker-run --rm -it pstauffer/curl curl http://nginx.default.svc.cluster.local
     ...
+    ```
+
+### [WeaveScope](https://github.com/weaveworks/scope)
+
+1. Add `--allow-privileged=true` to `/var/snap/microk8s/current/args/kube-apiserver` and activate it. 
+    ```bash
+    $ sudo systemctl restart snap.microk8s.daemon-apiserver.service
+    ```
+1. Create `weave` namespace and apply manifests.
+    ```bash
+    $ kubectl apply -f weavescope/ns.yaml
+    $ kubectl apply -k weavescope/bases
+    ```
+1. **Note**: Dev. environment only, access Web UI via Ingress.
+    1. Apply the Ingress manifest.
+        ```bash
+        $ kubectl apply -f weavescope/ingress.yaml
+        ```
+    1. Add the following DNS entry to your `hosts` file.
+        ```
+        <microk8s host IP> http://weave-scope-app.default.uk8s.example.com/
+        ```
+    1. Access http://weave-scope-app.default.uk8s.example.com
+1. Access Web UI by the following port forwarding.
+    1. Setup port forwarding.
+        ```bash
+        $ kubectl port-forward svc/weave-scope-app -n weave 4040:80
+        ```
+    1. Access http://localhost:4040
+1. Delete manifests.
+    ```bash
+    $ kubectl delete -k weavescope/bases
+    $ kubectl delete -f weavescope/ingress.yaml
+    $ kubectl delete -f weavescope/ns.yaml
     ```

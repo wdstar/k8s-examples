@@ -11,10 +11,10 @@ metadata:
   namespace: weave
 spec:
   ports:
-    - name: app
-      port: 80
-      protocol: TCP
-      targetPort: 4040
+  - name: app
+    port: 80
+    protocol: TCP
+    targetPort: 4040
   selector:
     name: weave-scope-app
     app: weave-scope
@@ -46,16 +46,16 @@ spec:
         weave-scope-component: app
     spec:
       containers:
-        - name: app
-          args:
-            - '--no-probe'
-          env: []
-          image: weaveworks/scope:1.13.0
-          imagePullPolicy: IfNotPresent
-          ports:
-            - containerPort: 4040
-              protocol: TCP
-          resources:
-            requests:
-              cpu: 200m
-              memory: 200Mi
+      - name: app
+        args:
+        - '--no-probe'
+        env: []
+        image: weaveworks/scope:1.13.0
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 4040
+          protocol: TCP
+        resources:
+          requests:
+            cpu: 200m
+            memory: 200Mi

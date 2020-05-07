@@ -114,6 +114,6 @@ roleRef:
   name: weave-scope
   apiGroup: rbac.authorization.k8s.io
 subjects:
-  - kind: ServiceAccount
-    name: weave-scope
-    namespace: weave
+- kind: ServiceAccount
+  name: weave-scope
+  namespace: weave
