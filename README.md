@@ -258,9 +258,9 @@ See: https://github.com/wdstar/mtail-image
         ```
     1. Add the following DNS entry to your `hosts` file.
         ```
-        <microk8s host IP> weave-scope-app.default.uk8s.example.com
+        <microk8s host IP> weave-scope.default.uk8s.example.com
         ```
-    1. Access http://weave-scope-app.default.uk8s.example.com
+    1. Access http://weave-scope.default.uk8s.example.com
 1. Access Web UI by the following port forwarding.
     1. Setup port forwarding.
         ```bash
