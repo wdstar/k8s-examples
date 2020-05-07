@@ -29,9 +29,9 @@ spec:
         - '--probe-only'
         - '--probe.kubernetes.role=host'
         - '--probe.cri=true'
-        - '--probe.cri.endpoint=unix///run/containerd/containerd.sock'
+        - '--probe.cri.endpoint=unix:///run/containerd/containerd.sock'
+        - '--probe.docker=false'
         #- '--probe.docker.bridge=docker0'
-        #- '--probe.docker=true'
         - 'weave-scope-app.weave.svc.cluster.local.:80'
         image: weaveworks/scope:1.13.0
         imagePullPolicy: IfNotPresent
