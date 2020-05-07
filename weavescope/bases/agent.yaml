@@ -8,7 +8,6 @@ metadata:
     app: weave-scope
     weave-cloud-component: scope
     weave-scope-component: agent
-  namespace: weave
 spec:
   minReadySeconds: 5
   selector:
