@@ -14,7 +14,8 @@ Kubernetes examples.
         - [Kubernetes Operational View](#kubernetes-operational-view)
         - [mtail](#mtail)
         - [Nginx](#nginx)
-        - [PowerfulSeal](#powerfulseal )
+        - [PowerfulSeal](#powerfulseal)
+        - [Sysdig](#sysdig)
         - [Telegraf](#telegraf)
         - [Telepresence](#telepresence)
         - [WeaveScope](#weavescope)
@@ -183,6 +184,14 @@ See: https://github.com/wdstar/mtail-image
 1. Delete manifests.
     ```bash
     $ kubectl delete -k powerfulseal/bases
+    ```
+
+### [Sysdig](https://github.com/draios/sysdig)
+
+1. [Install Sysdig](https://github.com/draios/sysdig/wiki/How-to-Install-Sysdig-for-Linux).
+1. Run `csysdig`.
+    ```bash
+    $ sudo csysdig --cri /var/snap/microk8s/common/run/containerd.sock
     ```
 
 ### [Telegraf](https://github.com/influxdata/telegraf)
