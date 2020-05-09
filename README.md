@@ -189,9 +189,13 @@ See: https://github.com/wdstar/mtail-image
 ### [Sysdig](https://github.com/draios/sysdig)
 
 1. [Install Sysdig](https://github.com/draios/sysdig/wiki/How-to-Install-Sysdig-for-Linux).
-1. Run `csysdig`.
+1. Create a proxy server to the Kubernetes API server.
     ```bash
-    $ sudo csysdig --cri /var/snap/microk8s/common/run/containerd.sock
+    $ kubectl proxy --port=8080
+    ```
+1. On another terminal, run `csysdig`.
+    ```bash
+    $ sudo csysdig -k http://127.0.0.1:8080 -pc --cri /var/snap/microk8s/common/run/containerd.sock
     ```
 
 ### [Telegraf](https://github.com/influxdata/telegraf)
