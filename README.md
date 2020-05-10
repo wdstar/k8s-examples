@@ -10,6 +10,7 @@ Kubernetes examples.
         - [chaoskube](#chaoskube)
         - [Cloudprober](#cloudprober)
         - [crond](#crond)
+        - [Falco](#falco)
         - [Grafana](#grafana)
         - [Kubernetes Operational View](#kubernetes-operational-view)
         - [mtail](#mtail)
@@ -110,6 +111,27 @@ Kubernetes examples.
 ### crond
 
 See: https://github.com/wdstar/crond-image
+
+### [Falco](https://github.com/falcosecurity/falco)
+
+Ref.: https://falco.org/docs/installation/
+
+1. Add `--allow-privileged=true` to `/var/snap/microk8s/current/args/kube-apiserver` and activate it. 
+    ```bash
+    $ sudo systemctl restart snap.microk8s.daemon-apiserver.service
+    ```
+1. Apply manifests.
+    ```bash
+    $ kubectl apply -k falco/bases
+    ```
+1. Verify Falco started correctly.
+    ```bash
+    $ kubectl logs -l app=falco-example
+    ```
+1. Delete manifests.
+    ```bash
+    $ kubectl delete -k falco/bases
+    ```
 
 ### [Grafana](https://grafana.com/)
 

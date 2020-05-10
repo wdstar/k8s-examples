@@ -1,0 +1,13 @@
+---
+namespace: default
+resources:
+- agent.yaml
+- event-generator.yaml
+- rbac.yaml
+configMapGenerator:
+- name: falco-config
+  files:
+  - falco-config/falco.yaml
+  - falco-config/falco_rules.local.yaml
+  - falco-config/falco_rules.yaml
+  - falco-config/k8s_audit_rules.yaml
