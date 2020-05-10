@@ -37,13 +37,13 @@ spec:
         image: falcosecurity/falco:latest
         securityContext:
           privileged: true
-# Uncomment the 3 lines below to enable eBPF support for Falco.
-# This allows Falco to run on Google COS.
-# Leave blank for the default probe location, or set to the path
-# of a precompiled probe.
-#          env:
-#          - name: FALCO_BPF_PROBE
-#            value: ""
+        # Uncomment the 3 lines below to enable eBPF support for Falco.
+        # This allows Falco to run on Google COS.
+        # Leave blank for the default probe location, or set to the path
+        # of a precompiled probe.
+        # env:
+        # - name: FALCO_BPF_PROBE
+        #   value: ""
         args:
         - "/usr/bin/falco"
         - "--cri"
