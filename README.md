@@ -219,6 +219,17 @@ See: https://github.com/wdstar/mtail-image
     ```bash
     $ sudo csysdig -k http://127.0.0.1:8080 -pc --cri /var/snap/microk8s/common/run/containerd.sock
     ```
+    - Tips: Using eBPF instrumentation instead of Sysdig kernel module.
+        1. Confirm the Kernel version (eBPF support >= `4.14`) and install `clang` and `llvm`.
+            ```bash
+            $ uname -r
+            4.15.0-99-generic
+            $ sudo apt-get install clang llvm
+            ```
+        1. Run `csysdig` with `-B` (or `--bpf=""`) option.
+            ```bash
+            $ sudo csysdig -B -k http://127.0.0.1:8080 -pc --cri /var/snap/microk8s/common/run/containerd.sock
+            ```
 
 ### [Telegraf](https://github.com/influxdata/telegraf)
 
