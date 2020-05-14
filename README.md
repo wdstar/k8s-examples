@@ -210,6 +210,8 @@ See: https://github.com/wdstar/mtail-image
 
 ### [Sysdig](https://github.com/draios/sysdig)
 
+#### Local
+
 1. [Install Sysdig](https://github.com/draios/sysdig/wiki/How-to-Install-Sysdig-for-Linux).
 1. Create a proxy server to the Kubernetes API server.
     ```bash
@@ -230,6 +232,26 @@ See: https://github.com/wdstar/mtail-image
             ```bash
             $ sudo csysdig -B -k http://127.0.0.1:8080 -pc --cri /var/snap/microk8s/common/run/containerd.sock
             ```
+
+#### MicroK8s
+
+1. Add `--allow-privileged=true` to `/var/snap/microk8s/current/args/kube-apiserver` and activate it. 
+    ```bash
+    $ sudo systemctl restart snap.microk8s.daemon-apiserver.service
+    ```
+1. Apply manifests.
+    ```bash
+    $ kubectl apply -k sysdig/bases
+    ```
+1. Execute `bash` in a sysdig-daemonset pod and hit `sysdig` or `csysdig`.
+    ```bash
+    $ kubectl exec -it sysdig-daemonset-<pod id> -c sysdig -- bash
+    root@sysdig-daemonset-rgqnb:/# csysdig -pc
+    ```
+1. Delete manifests.
+    ```bash
+    $ kubectl delete -k sysdig/bases
+    ```
 
 ### [Telegraf](https://github.com/influxdata/telegraf)
 
