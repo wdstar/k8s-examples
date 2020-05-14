@@ -1,0 +1,28 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sysdig-inspect
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sysdig-inspect
+  template:
+    metadata:
+      labels:
+        app: sysdig-inspect
+    spec:
+      containers:
+      - name: sysdig-inspect
+        image: sysdig/sysdig-inspect:latest
+        ports:
+        - containerPort: 3000
+          protocol: TCP
+        volumeMounts:
+        - mountPath: /captures
+          name: captures-fs
+      volumes:
+      - name: captures-fs
+        hostPath:
+          path: /opt/sysdig/captures

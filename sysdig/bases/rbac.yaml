@@ -28,14 +28,12 @@ kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: sysdig-cluster-role-binding
-  namespace: default
   labels:
     app: sysdig-example
     role: security
 subjects:
 - kind: ServiceAccount
   name: sysdig-account
-  namespace: default
 roleRef:
   kind: ClusterRole
   name: sysdig-cluster-role

@@ -1,0 +1,28 @@
+---
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: sysdig-inspect
+spec:
+  rules:
+  - host: sysdig-inspect.default.uk8s.example.com
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: sysdig-inspect
+          servicePort: 3000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sysdig-inspect
+  labels:
+    app: sysdig-inspect
+spec:
+  type: ClusterIP
+  ports:
+  - port: 3000
+    targetPort: 3000
+  selector:
+    app: sysdig-inspect

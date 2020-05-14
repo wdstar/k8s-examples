@@ -59,6 +59,8 @@ spec:
         - mountPath: /host/etc/
           name: etc-fs
           readOnly: true
+        - mountPath: /captures
+          name: captures-fs
       volumes:
       # - name: docker-socket
       #   hostPath:
@@ -85,3 +87,6 @@ spec:
       - name: etc-fs
         hostPath:
           path: /etc
+      - name: captures-fs
+        hostPath:
+          path: /opt/sysdig/captures
