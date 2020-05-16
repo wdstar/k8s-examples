@@ -243,14 +243,25 @@ See: https://github.com/wdstar/mtail-image
     ```bash
     $ kubectl apply -k sysdig/bases
     ```
+    1. If you use Sysdig Inspect too.
+        ```bash
+        $ kubectl apply -k sysdig/inspect
+        ```
+    1. Add the following DNS entry to your `hosts` file.
+        ```
+        <microk8s host IP> sysdig-inspect.default.uk8s.example.com
+        ```
 1. Execute `bash` in a sysdig-daemonset pod and hit `sysdig` or `csysdig`.
     ```bash
     $ kubectl exec -it sysdig-daemonset-<pod id> -c sysdig -- bash
-    root@sysdig-daemonset-rgqnb:/# csysdig -pc
+    root@sysdig-daemonset-rgqnb:/# csysdig -K /var/run/secrets/kubernetes.io/serviceaccount/token -k https://${KUBERNETES_SERVICE_HOST} -pk -pc
     ```
+1. If you use Sysdig Inspect, access http://sysdig-inspect.default.uk8s.example.com
 1. Delete manifests.
     ```bash
     $ kubectl delete -k sysdig/bases
+    or
+    $ kubectl delete -k sysdig/inspect
     ```
 
 ### [Telegraf](https://github.com/influxdata/telegraf)
