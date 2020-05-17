@@ -30,8 +30,8 @@ spec:
         - '--probe.kubernetes.role=host'
         - '--probe.cri=true'
         - '--probe.cri.endpoint=unix:///run/containerd/containerd.sock'
-        - '--probe.docker=false'
-        #- '--probe.docker.bridge=docker0'
+        - '--probe.docker=true'
+        - '--probe.docker.bridge=docker0'
         - '--weave=false'
         - 'weave-scope-app.weave.svc.cluster.local.:80'
         image: weaveworks/scope:1.13.0
@@ -45,8 +45,8 @@ spec:
         volumeMounts:
         - name: containerd-socket
           mountPath: /run/containerd/containerd.sock
-        # - name: docker-socket
-        #   mountPath: /var/run/docker.sock
+        - name: docker-socket
+          mountPath: /var/run/docker.sock
         - name: scope-plugins
           mountPath: /var/run/scope/plugins
         - name: sys-kernel-debug
@@ -60,10 +60,12 @@ spec:
       volumes:
       - name: containerd-socket
         hostPath:
+          # for MicroK8s's containerd
           path: /var/snap/microk8s/common/run/containerd.sock
-      # - name: docker-socket
-      #   hostPath:
-      #     path: /var/run/docker.sock
+      - name: docker-socket
+        hostPath:
+          # for official Docker distribution
+          path: /var/run/docker.sock
       - name: scope-plugins
         hostPath:
           path: /var/run/scope/plugins
