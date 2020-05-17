@@ -47,6 +47,7 @@ spec:
       - name: app
         args:
         - '--no-probe'
+        - '--weave=false'
         env: []
         image: weaveworks/scope:1.13.0
         imagePullPolicy: IfNotPresent
