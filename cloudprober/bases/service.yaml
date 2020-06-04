@@ -101,6 +101,7 @@ kind: ConfigMap
 metadata:
   name: cloudprober
 data:
+  # See: https://github.com/google/cloudprober/blob/master/config/config.go
   cloudprober.cfg: |
     probe {
       name: "google_homepage"
