@@ -89,7 +89,7 @@ Kubernetes examples.
     $ sudo microk8s.enable helm3 storage
     ...
     ```
-1. Install Anchore Engine
+1. Install Anchore Engine.
     ```bash
     $ sudo microk8s.helm3 repo add anchore https://charts.anchore.io
     "anchore" has been added to your repositories
@@ -103,6 +103,37 @@ Kubernetes examples.
     anchore-demo-anchore-engine-policy-59d9c66f5-sxjfg         1/1     Running   0          2m7s
     anchore-demo-anchore-engine-simplequeue-66df84ffd9-cdgwj   1/1     Running   0          2m7s
     anchore-demo-postgresql-69c55f9c5-plp2k                    1/1     Running   0          2m7s
+    ```
+1. Run an anchore-cli container.
+    ```bash
+    $ ANCHORE_CLI_PASS=$(kubectl get secret --namespace default anchore-demo-anchore-engine -o jsonpath="{.data.ANCHORE_ADMIN_PASSWORD}" | base64 --decode; echo)
+    $ kubectl run -i --tty anchore-cli --restart=Always --image anchore/engine-cli \
+      --env ANCHORE_CLI_USER=admin --env ANCHORE_CLI_PASS=${ANCHORE_CLI_PASS} \
+      --env ANCHORE_CLI_URL=http://anchore-demo-anchore-engine-api.default.svc.cluster.local:8228/v1/
+    ...
+    # check system status.
+    [anchore@anchore-cli anchore-cli]$ anchore-cli system status
+    ...
+    Engine DB Version: 0.0.14
+    Engine Code Version: 0.9.2
+    [anchore@anchore-cli anchore-cli]$ exit
+    # re-attach the container.
+    $ kubectl attach anchore-cli -c anchore-cli -i -t
+    [anchore@anchore-cli anchore-cli]$
+    ```
+1. Analyze a image.
+    ```bash
+    [anchore@anchore-cli anchore-cli]$ anchore-cli image add docker.io/library/nginx:latest
+    ...
+    # check analysis status.
+    [anchore@anchore-cli anchore-cli]$ anchore-cli image list
+    Full Tag                              Image Digest
+                            Analysis Status
+    docker.io/library/nginx:latest        sha256:48d56bae87c65ca642b0a1d13c3dc97c4430994991e5531ff123f77cdf975fae
+                            analyzed
+    # show vulnerabilities.
+    [anchore@anchore-cli anchore-cli]$ anchore-cli image vuln docker.io/library/nginx:latest all
+    ...
     ```
 
 ### [chaoskube](https://github.com/linki/chaoskube)
