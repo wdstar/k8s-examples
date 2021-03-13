@@ -7,6 +7,7 @@ Kubernetes examples.
     - [Table of Contents](#table-of-contents)
     - [Install MicroK8s](#install-microk8s)
     - [Examples](#examples)
+        - [Anchore Engine](#anchore-engine)
         - [chaoskube](#chaoskube)
         - [Cloudprober](#cloudprober)
         - [crond](#crond)
@@ -25,7 +26,7 @@ Kubernetes examples.
 
 1. Install MicroK8s and addons.
     ```bash
-    $ sudo snap install microk8s --channel 1.17/stable --classic
+    $ sudo snap install microk8s --channel latest/stable --classic
     ...
 
     $ sudo microk8s.status --wait-ready
@@ -80,6 +81,29 @@ Kubernetes examples.
     ```
 
 ## Examples
+
+### [Anchore Engine](https://engine.anchore.io/)
+
+1. Install required MicroK8s addons.
+    ```bash
+    $ sudo microk8s.enable helm3 storage
+    ...
+    ```
+1. Install Anchore Engine
+    ```bash
+    $ sudo microk8s.helm3 repo add anchore https://charts.anchore.io
+    "anchore" has been added to your repositories
+    $ sudo microk8s.helm3 install anchore-demo anchore/anchore-engine
+    ...
+    $ kubectl get po
+    NAME                                                       READY   STATUS    RESTARTS   AGE
+    anchore-demo-anchore-engine-analyzer-7886755c84-tdnbr      1/1     Running   0          2m7s
+    anchore-demo-anchore-engine-api-584576cd9d-phwmz           1/1     Running   0          2m7s
+    anchore-demo-anchore-engine-catalog-5db69ddd68-vc9dn       1/1     Running   0          2m7s
+    anchore-demo-anchore-engine-policy-59d9c66f5-sxjfg         1/1     Running   0          2m7s
+    anchore-demo-anchore-engine-simplequeue-66df84ffd9-cdgwj   1/1     Running   0          2m7s
+    anchore-demo-postgresql-69c55f9c5-plp2k                    1/1     Running   0          2m7s
+    ```
 
 ### [chaoskube](https://github.com/linki/chaoskube)
 
