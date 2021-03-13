@@ -135,6 +135,14 @@ Kubernetes examples.
     [anchore@anchore-cli anchore-cli]$ anchore-cli image vuln docker.io/library/nginx:latest all
     ...
     ```
+1. Manage policies.
+    ```bash
+    [anchore@anchore-cli anchore-cli]$ anchore-cli policy list
+    Policy ID                                   Active        Created                     Updated
+    2c53a13c-1765-11e8-82ef-23527761d060        True          2021-03-13T02:09:43Z        2021-03-13T02:09:43Z
+    [anchore@anchore-cli anchore-cli]$ anchore-cli policy get 2c53a13c-1765-11e8-82ef-23527761d060 --detail
+    ... (output as JSON)
+    ```
 
 ### [chaoskube](https://github.com/linki/chaoskube)
 
