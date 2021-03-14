@@ -131,6 +131,9 @@ Kubernetes examples.
                             Analysis Status
     docker.io/library/nginx:latest        sha256:48d56bae87c65ca642b0a1d13c3dc97c4430994991e5531ff123f77cdf975fae
                             analyzed
+    # perform a policy evaluation.
+    [anchore@anchore-cli anchore-cli]$ anchore-cli evaluate check docker.io/library/nginx:latest
+    ...
     # show vulnerabilities.
     [anchore@anchore-cli anchore-cli]$ anchore-cli image vuln docker.io/library/nginx:latest all
     ...
