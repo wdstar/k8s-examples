@@ -1,0 +1,16 @@
+existingCredentialsSecret: anchore-credentials
+anchoreEndpoint: http://anchore-demo-anchore-engine-api.default.svc.cluster.local:8228
+policySelectors:
+  - Selector:
+      ResourceType: "image"
+      SelectorKeyRegex: ".*"
+      SelectorValueRegex: ".*"
+    PolicyReference:
+      Username: "admin"
+      # This is the default bundle id in anchore engine
+      PolicyBundleId: "2c53a13c-1765-11e8-82ef-23527761d060"
+    # Mode is one of: "policy", "analysis", or "breakglass".
+    #   policy => require policy pass,
+    #   analysis => require image analyzed,
+    #   breakglass => do nothing
+    Mode: breakglass

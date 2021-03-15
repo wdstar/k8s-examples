@@ -8,6 +8,7 @@ Kubernetes examples.
     - [Install MicroK8s](#install-microk8s)
     - [Examples](#examples)
         - [Anchore Engine](#anchore-engine)
+        - [Anchore Admission Controller](#anchore-admission-controller)
         - [chaoskube](#chaoskube)
         - [Cloudprober](#cloudprober)
         - [crond](#crond)
@@ -145,6 +146,25 @@ Kubernetes examples.
     2c53a13c-1765-11e8-82ef-23527761d060        True          2021-03-13T02:09:43Z        2021-03-13T02:09:43Z
     [anchore@anchore-cli anchore-cli]$ anchore-cli policy get 2c53a13c-1765-11e8-82ef-23527761d060 --detail
     ... (output as JSON)
+    ```
+
+### [Anchore Admission Controller](https://github.com/anchore/anchore-charts/tree/master/stable/anchore-admission-controller)
+
+The preceeding Anchore Engine setup is required.
+
+1. Create secrets resource for Anchore users.
+    ```bash
+    # edit ./anchore/admission-controller/credentials.json and apply it.
+    $ kubectl create secret generic anchore-credentials \
+      --from-file=./anchore/admission-controller/credentials.json
+    ```
+1. Install Anchore Admission Controller.
+    ```bash
+    # edit ./anchore/admission-controller/values.yaml and then
+    $ sudo microk8s.helm3 repo add anchore https://charts.anchore.io
+    "anchore" has been added to your repositories
+    $ sudo microk8s.helm3 install anchore-admission-controller anchore/anchore-admission-controller \
+      -f ./anchore/admission-controller/values.yaml
     ```
 
 ### [chaoskube](https://github.com/linki/chaoskube)
