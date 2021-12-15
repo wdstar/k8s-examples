@@ -480,7 +480,7 @@
 
 # # How to test:
 # # Create an ingress.yaml file with content:
-# apiVersion: networking.k8s.io/v1beta1
+# apiVersion: networking.k8s.io/v1
 # kind: Ingress
 # metadata:
 #   name: test-ingress
@@ -491,9 +491,12 @@
 #   - http:
 #       paths:
 #       - path: /testpath
+#         pathType: ImplementationSpecific
 #         backend:
-#           serviceName: test
-#           servicePort: 80
+#           service:
+#             name: test
+#             port:
+#               number: 80
 # # Execute: kubectl apply -f ingress.yaml
 
 - rule: Ingress Object without TLS Certificate Created

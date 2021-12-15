@@ -1,5 +1,5 @@
 ---
-apiVersion: networking.k8s.io/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: prom-tg
@@ -9,9 +9,12 @@ spec:
     http:
       paths:
       - path: /
+        pathType: ImplementationSpecific
         backend:
-          serviceName: prom-tg
-          servicePort: 9090
+          service:
+            name: prom-tg
+            port:
+              number: 9090
 ---
 apiVersion: v1
 kind: Service

@@ -1,5 +1,5 @@
 ---
-apiVersion: networking.k8s.io/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: cloudprober
@@ -9,13 +9,19 @@ spec:
     http:
       paths:
       - path: /
+        pathType: ImplementationSpecific
         backend:
-          serviceName: cloudprober
-          servicePort: 9313
+          service:
+            name: cloudprober
+            port:
+              number: 9313
   - host: prom-cb.default.uk8s.example.com
     http:
       paths:
       - path: /
+        pathType: ImplementationSpecific
         backend:
-          serviceName: prom-cb
-          servicePort: 9090
+          service:
+            name: prom-cb
+            port:
+              number: 9090

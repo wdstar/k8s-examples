@@ -1,5 +1,5 @@
 ---
-apiVersion: networking.k8s.io/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: powerfulseal
@@ -9,13 +9,19 @@ spec:
     http:
       paths:
       - path: /
+        pathType: ImplementationSpecific
         backend:
-          serviceName: powerfulseal
-          servicePort: 8080
+          service:
+            name: powerfulseal
+            port:
+              number: 8080
   - host: powerfulseal-exp.default.uk8s.example.com
     http:
       paths:
       - path: /
+        pathType: ImplementationSpecific
         backend:
-          serviceName: powerfulseal-exp
-          servicePort: 9999
+          service:
+            name: powerfulseal-exp
+            port:
+              number: 9999

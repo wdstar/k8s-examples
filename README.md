@@ -5,6 +5,7 @@ Kubernetes examples.
 
 - [k8s-examples](#k8s-examples)
     - [Table of Contents](#table-of-contents)
+    - [Requirements](#requirements)
     - [Install MicroK8s](#install-microk8s)
     - [Examples](#examples)
         - [Anchore Engine](#anchore-engine)
@@ -22,6 +23,10 @@ Kubernetes examples.
         - [Telegraf](#telegraf)
         - [Telepresence](#telepresence)
         - [WeaveScope](#weavescope)
+
+## Requirements
+
+- Kubernetes >= 1.18
 
 ## Install MicroK8s
 
